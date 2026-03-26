@@ -83,8 +83,7 @@ const Dashboard = () => {
 
         <div className="nav-links">
           <span>Movies</span>
-          <span>Series</span>
-          <span>Premium</span>
+        
         </div>
 
         <input
