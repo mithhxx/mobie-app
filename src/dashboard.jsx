@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import YouTube from "react-youtube";
 import movieTrailer from "movie-trailer";
@@ -13,6 +13,8 @@ const Dashboard = () => {
 
   const API_KEY = "5c935d576c2794b06647ddfa8fe90c49";
   const navigate = useNavigate();
+
+  const clickTimeout = useRef(null); // 🔥 NEW
 
   // 🎬 FETCH
   useEffect(() => {
@@ -53,6 +55,19 @@ const Dashboard = () => {
     }
   };
 
+  // 🖱 SINGLE CLICK
+  const handleClick = (movie) => {
+    clickTimeout.current = setTimeout(() => {
+      handleTrailer(movie);
+    }, 250);
+  };
+
+  // 🖱🖱 DOUBLE CLICK
+  const handleDoubleClick = (movie) => {
+    clearTimeout(clickTimeout.current);
+    navigate(`/movie/${movie.id}`);
+  };
+
   const opts = {
     height: "400",
     width: "100%",
@@ -68,7 +83,7 @@ const Dashboard = () => {
 
         <div className="nav-links">
           <span>Movies</span>
-          <span>Series</span>
+          <span>Serie</span>
           <span>Premium</span>
         </div>
 
@@ -115,7 +130,8 @@ const Dashboard = () => {
             src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
             alt={movie.title}
 
-            onClick={() => navigate(`/movie/${movie.id}`)}   // ✅ FIX
+            onClick={() => handleClick(movie)}         // 🔥 updated
+            onDoubleClick={() => handleDoubleClick(movie)} // 🔥 updated
           />
         ))}
       </div>
@@ -131,7 +147,8 @@ const Dashboard = () => {
                 src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
                 alt={movie.title}
 
-                onClick={() => navigate(`/movie/${movie.id}`)}  // ✅ FIX
+                onClick={() => handleClick(movie)}         // 🔥 updated
+                onDoubleClick={() => handleDoubleClick(movie)} // 🔥 updated
               />
             ))}
           </div>
