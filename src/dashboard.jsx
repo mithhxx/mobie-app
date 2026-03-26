@@ -79,7 +79,7 @@ const Dashboard = () => {
 
       {/* 🔝 NAVBAR */}
       <div className="navbar">
-        <h2 className="logo">🎬 MOVIEFILE</h2>
+        <h2 className="logo">🎬 MOVIFY</h2>
 
         <div className="nav-links">
           <span>Movies</span>
