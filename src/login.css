@@ -1,0 +1,121 @@
+body {
+  margin: 0;
+  background: #0b0b0b;
+  font-family: Arial;
+}
+
+/* BACKGROUND */
+.login-bg {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 👁 EYES */
+.eye {
+  position: absolute;
+  width: 250px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #ff00ff 20%, #000 60%);
+  box-shadow: 0 0 60px #ff00ff;
+  animation: glow 2s infinite alternate;
+}
+
+/* pupil */
+.eye::after {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: black;
+  border-radius: 50%;
+  top: 40px;
+  left: 100px;
+}
+
+/* POSITION */
+.left {
+  left: 5%;
+  top: 40%;
+}
+
+.right {
+  right: 5%;
+  top: 40%;
+}
+
+/* ANIMATION */
+@keyframes glow {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+/* LOGIN CARD */
+.login-card {
+  width: 320px;
+  padding: 30px;
+  background: rgba(0,0,0,0.85);
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 0 40px #ff00ff;
+  backdrop-filter: blur(10px);
+}
+
+/* INPUT */
+.login-card input {
+  width: 100%;
+  padding: 10px;
+  margin: 12px 0;
+  border: none;
+  border-bottom: 1px solid gray;
+  background: transparent;
+  color: white;
+  outline: none;
+}
+
+/* OPTIONS */
+.options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-bottom: 15px;
+  color: #aaa;
+}
+
+/* BUTTON */
+.login-card button {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(45deg, #ff00ff, #ff66cc);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.login-card button:hover {
+  transform: scale(1.05);
+}
+
+/* TEXT */
+.login-card p {
+  font-size: 13px;
+  color: #ccc;
+}
+
+.login-card p span {
+  color: #ff00ff;
+  cursor: pointer;
+}

@@ -1,0 +1,92 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+}
+
+.container {
+  padding: 20px;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  color: #00ff99;
+}
+
+.nav-links span {
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.search {
+  padding: 8px 15px;
+  border-radius: 20px;
+  border: none;
+}
+
+/* BANNER */
+.banner {
+  height: 350px;
+  border-radius: 15px;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.banner::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to top, #0f172a, transparent);
+  left: 0;
+  top: 0;
+  border-radius: 15px;
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+}
+
+.play-btn {
+  padding: 10px 20px;
+  background: #00ff99;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* TRAILER */
+.trailer-box {
+  margin: 20px 0;
+}
+
+/* ROW */
+.row {
+  display: flex;
+  overflow-x: auto;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.row img {
+  width: 150px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.row img:hover {
+  transform: scale(1.1);
+}
