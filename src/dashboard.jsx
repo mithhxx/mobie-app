@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import YouTube from "react-youtube";
 import movieTrailer from "movie-trailer";
+import "./dashboard.css";
 
 const Dashboard = () => {
 
