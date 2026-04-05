@@ -34,25 +34,35 @@ const Dashboard = () => {
       .then(res => res.json())
       .then(data => {
         let sorted = (data.results || []).sort(
-          (a, b) => new Date(b.release_date) - new Date(a.release_date)
+          (a, b) => new Date(b.release_date || "2000") - new Date(a.release_date || "2000")
         );
-        setMovies(sorted);
-        setBanner(sorted[0]);
-      });
 
+        setMovies(sorted);
+
+        if (sorted.length > 0) {
+          setBanner(sorted[0]);
+        }
+      })
+      .catch(err => console.log("Movie fetch error:", err));
+
+    // 🔥 Trending
     fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`)
       .then(res => res.json())
-      .then(data => setTrending(data.results));
+      .then(data => setTrending(data.results || []))
+      .catch(err => console.log("Trending error:", err));
 
+    // ⭐ Top Rated
     fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}`)
       .then(res => res.json())
-      .then(data => setTopRated(data.results));
+      .then(data => setTopRated(data.results || []))
+      .catch(err => console.log("Top rated error:", err));
 
   }, [search, language]);
 
   // 🎥 CLICK FUNCTION
   const handleClick = (movie) => {
 
+    // toggle close
     if (selectedMovie && selectedMovie.id === movie.id) {
       setSelectedMovie(null);
       setTrailerUrl("");
@@ -62,17 +72,20 @@ const Dashboard = () => {
 
     setSelectedMovie(movie);
 
+    // 🎬 Trailer
     movieTrailer(movie.title || "")
       .then(url => {
+        if (!url) return;
         const params = new URLSearchParams(new URL(url).search);
         setTrailerUrl(params.get("v"));
       })
       .catch(() => setTrailerUrl(""));
 
+    // 🎭 Cast
     fetch(`https://api.themoviedb.org/3/movie/${movie.id}/credits?api_key=${API_KEY}`)
       .then(res => res.json())
-      .then(data => setCast(data.cast.slice(0, 10)));
-
+      .then(data => setCast((data.cast || []).slice(0, 10)))
+      .catch(err => console.log("Cast error:", err));
   };
 
   const opts = {
@@ -106,7 +119,7 @@ const Dashboard = () => {
       </div>
 
       {/* 🎬 BANNER */}
-      {banner && (
+      {banner && banner.backdrop_path && (
         <div
           className="banner"
           style={{
@@ -131,21 +144,29 @@ const Dashboard = () => {
       <h2>🔥 Latest Movies</h2>
       <div className="row">
         {movies.map(movie => (
-          <img key={movie.id}
-            src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-            onClick={() => handleClick(movie)}
-          />
+          movie.poster_path && (
+            <img
+              key={movie.id}
+              src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+              alt={movie.title}
+              onClick={() => handleClick(movie)}
+            />
+          )
         ))}
       </div>
 
-      {/* ⭐ TRENDING */}
+      {/* 🔥 TRENDING */}
       <h2>🔥 Trending</h2>
       <div className="row">
         {trending.map(movie => (
-          <img key={movie.id}
-            src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-            onClick={() => handleClick(movie)}
-          />
+          movie.poster_path && (
+            <img
+              key={movie.id}
+              src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+              alt={movie.title}
+              onClick={() => handleClick(movie)}
+            />
+          )
         ))}
       </div>
 
@@ -153,10 +174,14 @@ const Dashboard = () => {
       <h2>⭐ Top Rated</h2>
       <div className="row">
         {topRated.map(movie => (
-          <img key={movie.id}
-            src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-            onClick={() => handleClick(movie)}
-          />
+          movie.poster_path && (
+            <img
+              key={movie.id}
+              src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
+              alt={movie.title}
+              onClick={() => handleClick(movie)}
+            />
+          )
         ))}
       </div>
 
@@ -167,7 +192,7 @@ const Dashboard = () => {
           <h2>🎬 Movie Details</h2>
 
           <div className="details-box">
-            <img src={`https://image.tmdb.org/t/p/w300${selectedMovie.poster_path}`} />
+            <img src={`https://image.tmdb.org/t/p/w300${selectedMovie.poster_path}`} alt="" />
             <div className="info">
               <h1>{selectedMovie.title}</h1>
               <p>{selectedMovie.overview}</p>
@@ -179,9 +204,14 @@ const Dashboard = () => {
           <div className="cast-row">
             {cast.map(actor => (
               <div key={actor.id} className="cast-card">
-                <img src={actor.profile_path
-                  ? `https://image.tmdb.org/t/p/w200${actor.profile_path}`
-                  : "https://via.placeholder.com/150"} />
+                <img
+                  src={
+                    actor.profile_path
+                      ? `https://image.tmdb.org/t/p/w200${actor.profile_path}`
+                      : "https://via.placeholder.com/150"
+                  }
+                  alt={actor.name}
+                />
                 <p className="actor-name">{actor.name}</p>
                 <p className="actor-role">{actor.character}</p>
               </div>
